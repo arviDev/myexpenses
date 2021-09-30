@@ -1,33 +1,42 @@
-import 'package:hive/hive.dart';
+import 'package:myexpenses/app/data/sql/sql_meta.dart';
+import 'package:sqflite/sqflite.dart';
 
 class DataController {
-  void create() {}
-  void open(String boxName) async {
-    await Hive.openBox(boxName);
+  //database info
+  static const String _databaseName = 'myexpenses';
+  static const int _databaseVersion = 1;
+  SqlMeta sqlMeta = SqlMeta();
+
+  Future<String> path() async {
+    String databasesPath = await getDatabasesPath();
+    String path = databasesPath + dataBaseName;
+    return path;
   }
 
-  void update(dynamic key, Map<String, dynamic> map, String boxName) {
-    Box<Map<String, dynamic>> box = Hive.box<Map<String, dynamic>>(boxName);
-    box.put(key, map);
+  void deleteDatabase() async {
+    deleteDatabase();
   }
 
-  Map<String, dynamic> read(String boxName, dynamic key) {
-    Box<Map<String, dynamic>> box = Hive.box<Map<String, dynamic>>(boxName);
-    return box.get(key, defaultValue: {'defalt': 'No find values'})!;
+  void open() async {
+    String pathData = await path();
+    Database database = await openDatabase(pathData, version: 0);
+    if (database.getVersion() == 0) {
+       
+    }
   }
 
-  List<Map<String, dynamic>> readAll(String boxName) {
-    Box<Map<String, dynamic>> box = Hive.box<Map<String, dynamic>>(boxName);
-    return box.values.toList();
+  void createDatabase() async {
+    String pathData = await path();
+    Database database = await openDatabase(pathData, version: 1, onCreate: (Database db, int version) async {
+      await db.execute(SqlMeta.tableExpenses());
+    });
   }
 
-  void delete(String boxName, dynamic key) {
-    Box<Map<String, dynamic>> box = Hive.box<Map<String, dynamic>>(boxName);
-    box.delete(key);
-  }
+  String create
 
-  void deleteBox(String boxName, dynamic key) {
-    Box<Map<String, dynamic>> box = Hive.box<Map<String, dynamic>>(boxName);
-    box.deleteFromDisk();
-  }
+  void insert() {}
+  void delete() {}
+  void query() {}
+
+  void update() {}
 }
