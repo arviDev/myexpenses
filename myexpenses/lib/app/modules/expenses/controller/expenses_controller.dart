@@ -1,15 +1,19 @@
 import 'package:myexpenses/app/data/data_controller.dart';
+import 'package:myexpenses/app/modules/expenses/controller/category_controller.dart';
+import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 import 'package:myexpenses/app/modules/expenses/model/expense_model.dart';
 
 class ExpensesController {
   DataController dataController;
+  CategoryController categoryController;
   String tableName = 'expenses';
   ExpensesController({
     required this.dataController,
+    required this.categoryController,
   });
 
   void createExpense(
-      String title, String category, double value, DateTime expire,
+      String title, Category category, double value, DateTime expire,
       {bool paidOut = false}) {
     Expense newExpense = Expense(
       id: 0,
@@ -19,13 +23,21 @@ class ExpensesController {
       paidOut: paidOut,
       expire: expire,
     );
-    include(newExpense);
+    editingExpenses(newExpense);
   }
 
-  void include(Expense expense) {
-    List<Map<String, dynamic>> allExpenses = dataController.readAll(tableName);
-    int expenseId = allExpenses.isEmpty ? 0 : allExpenses.length;
-    expense.id = expenseId;
+  int idController() {
+    List<Expense> allExpenses = readAllExpenses();
+    if (allExpenses.isNotEmpty) {
+      return allExpenses.last.id++;
+    } else {
+      return 0;
+    }
+  }
+
+  void editingExpenses(Expense expense) {
+    Expense newExpense = expense.copyWith();
+    newExpense.id = idController();
     Map<String, dynamic> expensesMap = expense.toMap();
     dataController.update(expense.id, expensesMap, tableName);
   }
@@ -47,6 +59,38 @@ class ExpensesController {
   }
 
   void changeTitle(String newTitle, Expense expense) {
-    expense.title = newTitle;
+    Expense changeExpense = expense.copyWith();
+    changeExpense.title = newTitle;
+    Map<String, dynamic> expenseMap = changeExpense.toMap();
+    dataController.update(expense.id, expenseMap, tableName);
+  }
+
+  void changeCategory(
+    Category newCategory,
+    Expense expense,
+  ) {
+    //TODO: implements newCategory set
+  }
+  void changeValue(double newValue, Expense expense) {
+    Expense changeExpense = expense.copyWith();
+    changeExpense.value = newValue;
+    Map<String, dynamic> expenseMap = changeExpense.toMap();
+    dataController.update(expense.id, expenseMap, tableName);
+  }
+
+  void changeExpire(DateTime newExpire, Expense expense) {
+    Expense changeExpense = expense.copyWith();
+    changeExpense.expire = newExpire;
+    Map<String, dynamic> expenseMap = changeExpense.toMap();
+    dataController.update(expense.id, expenseMap, tableName);
+    expense.expire = newExpire;
+  }
+
+  void changePaidOut(bool paidOut, Expense expense) {
+    Expense changeExpense = expense.copyWith();
+    changeExpense.paidOut = paidOut;
+    Map<String, dynamic> expenseMap = changeExpense.toMap();
+    dataController.update(expense.id, expenseMap, tableName);
+    expense.paidOut = paidOut;
   }
 }

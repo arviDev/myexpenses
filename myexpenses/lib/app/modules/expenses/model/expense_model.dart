@@ -1,10 +1,12 @@
 import 'dart:convert';
 
+import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
+
 class Expense {
   int id;
   String title;
   double value;
-  String category;
+  Category category;
   bool paidOut;
   DateTime expire;
   Expense({
@@ -20,7 +22,7 @@ class Expense {
     int? id,
     String? title,
     double? value,
-    String? category,
+    Category? category,
     bool? paidOut,
     DateTime? expire,
   }) {
@@ -39,7 +41,7 @@ class Expense {
       'id': id,
       'title': title,
       'value': value,
-      'category': category,
+      'category': category.toMap(),
       'paidOut': paidOut,
       'expire': expire.millisecondsSinceEpoch,
     };
@@ -50,7 +52,7 @@ class Expense {
       id: map['id'],
       title: map['title'],
       value: map['value'],
-      category: map['category'],
+      category: Category.fromMap(map['category']),
       paidOut: map['paidOut'],
       expire: DateTime.fromMillisecondsSinceEpoch(map['expire']),
     );
