@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 
 class Expense {
@@ -7,15 +5,15 @@ class Expense {
   String title;
   double value;
   Category category;
-  bool paidOut;
-  DateTime expire;
+  bool isPaidOut;
+  DateTime expireDate;
   Expense({
     required this.id,
     required this.title,
     required this.value,
     required this.category,
-    required this.paidOut,
-    required this.expire,
+    required this.isPaidOut,
+    required this.expireDate,
   });
 
   Expense copyWith({
@@ -23,16 +21,16 @@ class Expense {
     String? title,
     double? value,
     Category? category,
-    bool? paidOut,
-    DateTime? expire,
+    bool? isPaidOut,
+    DateTime? expireDate,
   }) {
     return Expense(
       id: id ?? this.id,
       title: title ?? this.title,
       value: value ?? this.value,
       category: category ?? this.category,
-      paidOut: paidOut ?? this.paidOut,
-      expire: expire ?? this.expire,
+      isPaidOut: isPaidOut ?? this.isPaidOut,
+      expireDate: expireDate ?? this.expireDate,
     );
   }
 
@@ -42,8 +40,8 @@ class Expense {
       'title': title,
       'value': value,
       'category': category.toMap(),
-      'paidOut': paidOut,
-      'expire': expire.millisecondsSinceEpoch,
+      'isPaidOut': isPaidOut ? 1 : 0,
+      'expireDate': expireDate.millisecondsSinceEpoch,
     };
   }
 
@@ -53,19 +51,14 @@ class Expense {
       title: map['title'],
       value: map['value'],
       category: Category.fromMap(map['category']),
-      paidOut: map['paidOut'],
-      expire: DateTime.fromMillisecondsSinceEpoch(map['expire']),
+      isPaidOut: map['isPaidOut'],
+      expireDate: DateTime.fromMillisecondsSinceEpoch(map['expireDate']),
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory Expense.fromJson(String source) =>
-      Expense.fromMap(json.decode(source));
-
   @override
   String toString() {
-    return 'Expense(id: $id, title: $title, value: $value, category: $category, paidOut: $paidOut, expire: $expire)';
+    return 'Expense(id: $id, title: $title, value: $value, category: $category, isPaidOut: $isPaidOut, expireDate: $expireDate)';
   }
 
   @override
@@ -77,8 +70,8 @@ class Expense {
         other.title == title &&
         other.value == value &&
         other.category == category &&
-        other.paidOut == paidOut &&
-        other.expire == expire;
+        other.isPaidOut == isPaidOut &&
+        other.expireDate == expireDate;
   }
 
   @override
@@ -87,7 +80,7 @@ class Expense {
         title.hashCode ^
         value.hashCode ^
         category.hashCode ^
-        paidOut.hashCode ^
-        expire.hashCode;
+        isPaidOut.hashCode ^
+        expireDate.hashCode;
   }
 }

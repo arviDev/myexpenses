@@ -1,42 +1,43 @@
-import 'package:myexpenses/app/data/sql/sql_meta.dart';
+import 'package:flutter/material.dart';
+import 'package:myexpenses/app/data/sql/helpers/db.dart';
+import 'package:myexpenses/app/modules/expenses/model/expense_model.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DataController {
+class DataController extends ChangeNotifier {
   //database info
   static const String _databaseName = 'myexpenses';
-  static const int _databaseVersion = 1;
-  SqlMeta sqlMeta = SqlMeta();
-
-  Future<String> path() async {
-    String databasesPath = await getDatabasesPath();
-    String path = databasesPath + dataBaseName;
-    return path;
-  }
 
   void deleteDatabase() async {
     deleteDatabase();
   }
 
-  void open() async {
-    String pathData = await path();
-    Database database = await openDatabase(pathData, version: 0);
-    if (database.getVersion() == 0) {
-       
-    }
+  void insert(Map<String, dynamic> map) async {
+    Database db = await DB.instance.database;
+    // Expense newExpense = expense.copyWith();
+    // Map<String, dynamic> expenseMap = newExpense.toMap();
+    db.insert(_databaseName, map);
+    notifyListeners();
   }
 
-  void createDatabase() async {
-    String pathData = await path();
-    Database database = await openDatabase(pathData, version: 1, onCreate: (Database db, int version) async {
-      await db.execute(SqlMeta.tableExpenses());
-    });
+  void delete(Expense expense) async {
+    Database db = await DB.instance.database;
+    db.delete(_databaseName, where: 'id = ?', whereArgs: [expense.id]);
+    notifyListeners();
   }
 
-  String create
+  Future<List<Expense>> query(String column, List args) async {
+    Database db = await DB.instance.database;
+    List<Map<String, Object?>> result = await db.query(
+      _databaseName,
+      where: column,
+      whereArgs: args,
+    );
+    List<Expense> expenses = result.map((e) => Expense.fromMap(e)).toList();
+    return expenses;
+  }
 
-  void insert() {}
-  void delete() {}
-  void query() {}
-
-  void update() {}
+  void update(Map<String, dynamic> map) async {
+    Database db = await DB.instance.database;
+    db.update(_databaseName, map, where: 'id = ?', whereArgs: [map['id']]);
+  }
 }

@@ -13,15 +13,15 @@ class ExpensesController {
   });
 
   void createExpense(
-      String title, Category category, double value, DateTime expire,
-      {bool paidOut = false}) {
+      String title, Category category, double value, DateTime expireDate,
+      {bool isPaidOut = false}) {
     Expense newExpense = Expense(
       id: 0,
       title: title,
       value: value,
       category: category,
-      paidOut: paidOut,
-      expire: expire,
+      isPaidOut: isPaidOut,
+      expireDate: expireDate,
     );
     editingExpenses(newExpense);
   }
@@ -78,19 +78,19 @@ class ExpensesController {
     dataController.update(expense.id, expenseMap, tableName);
   }
 
-  void changeExpire(DateTime newExpire, Expense expense) {
+  void changeExpireDate(DateTime newExpireDate, Expense expense) {
     Expense changeExpense = expense.copyWith();
-    changeExpense.expire = newExpire;
+    changeExpense.expireDate = newExpireDate;
     Map<String, dynamic> expenseMap = changeExpense.toMap();
     dataController.update(expense.id, expenseMap, tableName);
-    expense.expire = newExpire;
+    expense.expireDate = newExpireDate;
   }
 
-  void changePaidOut(bool paidOut, Expense expense) {
+  void changeisPaidOut(bool isPaidOut, Expense expense) {
     Expense changeExpense = expense.copyWith();
-    changeExpense.paidOut = paidOut;
+    changeExpense.isPaidOut = isPaidOut;
     Map<String, dynamic> expenseMap = changeExpense.toMap();
     dataController.update(expense.id, expenseMap, tableName);
-    expense.paidOut = paidOut;
+    expense.isPaidOut = isPaidOut;
   }
 }
