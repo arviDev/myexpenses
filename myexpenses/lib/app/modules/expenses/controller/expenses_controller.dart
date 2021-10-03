@@ -37,14 +37,11 @@ class ExpensesController {
   }
 
   void insertExpenses(Expense expense) {
-    Expense newExpense = expense.copyWith();
-    Map<String, dynamic> expenseMap = newExpense.toMap();
+    Map<String, dynamic> expenseMap = expense.toMap();
     dataController.insert(expenseMap, tableName);
   }
 
   void updateExpenses(Expense expense) async {
-    Expense newExpense = expense.copyWith();
-    newExpense.id = await idController();
     Map<String, dynamic> expensesMap = expense.toMap();
     dataController.update(expensesMap, tableName);
   }

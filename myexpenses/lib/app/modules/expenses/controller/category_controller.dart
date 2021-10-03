@@ -8,9 +8,9 @@ class CategoryController {
     required this.dataController,
   });
 
-  void createCategory(String title, String color) {
+  void createCategory(String title, String color) async {
     Category newCategory = Category(
-      id: 0,
+      id: await idController(),
       title: title,
       color: color,
       isActive: true,
@@ -18,8 +18,8 @@ class CategoryController {
     editingCategory(newCategory);
   }
 
-  int idController() {
-    List<Category> allCategorys = readAllCategory();
+  Future<int> idController() async {
+    List<Category> allCategorys = await readAllCategory();
     if (allCategorys.isNotEmpty) {
       return allCategorys.last.id++;
     } else {
@@ -28,9 +28,7 @@ class CategoryController {
   }
 
   void editingCategory(Category category) {
-    Category newCategory = category.copyWith();
-    newCategory.id = idController();
-    Map<String, dynamic> categoryMap = newCategory.toMap();
+    Map<String, dynamic> categoryMap = category.toMap();
     dataController.update(categoryMap, tableName);
   }
 
@@ -39,16 +37,15 @@ class CategoryController {
     dataController.delete(categoryMap, tableName);
   }
 
-  Category readCategory(int id) {
-    Category foundCategory = readAllCategory().where((e) => e.id == id).single;
-    return foundCategory;
+  Future<Category> readCategory(int id) async {
+    List<Category> categorys = await readAllCategory();
+    Category category = categorys.where((e) => e.id == id).single;
+    return category;
   }
 
-  List<Category> readAllCategory() {
-    List<Category> categorys = dataController
-        .readAll(tableName)
-        .map((e) => Category.fromMap(e))
-        .toList();
+  Future<List<Category>> readAllCategory() async {
+    List<Map<String, dynamic>> result = await dataController.read(tableName);
+    List<Category> categorys = result.map((e) => Category.fromMap(e)).toList();
     return categorys;
   }
 
@@ -56,13 +53,13 @@ class CategoryController {
     Category changeCategory = category.copyWith();
     changeCategory.title = newTitle;
     Map<String, dynamic> categoryMap = changeCategory.toMap();
-    dataController.update(category.id, categoryMap, tableName);
+    dataController.update(categoryMap, tableName);
   }
 
   void changeColor(String newColor, Category category) {
     Category changeCategory = category.copyWith();
     changeCategory.color = newColor;
     Map<String, dynamic> categoryMap = changeCategory.toMap();
-    dataController.update(category.id, categoryMap, tableName);
+    dataController.update(categoryMap, tableName);
   }
 }
