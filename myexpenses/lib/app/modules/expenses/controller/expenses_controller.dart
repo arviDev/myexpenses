@@ -14,20 +14,21 @@ class ExpensesController {
 
   void createExpense(
       String title, Category category, double value, DateTime expireDate,
-      {bool isPaidOut = false}) {
+      {bool isPaidOut = false}) async {
     Expense newExpense = Expense(
-      id: 0,
+      id: await idController(),
       title: title,
       value: value,
       category: category,
       isPaidOut: isPaidOut,
       expireDate: expireDate,
+      isActive: true,
     );
-    editingExpenses(newExpense);
+    insertExpenses(newExpense);
   }
 
-  int idController() {
-    List<Expense> allExpenses = readAllExpenses();
+  Future<int> idController() async {
+    List<Expense> allExpenses = await readAllExpenses();
     if (allExpenses.isNotEmpty) {
       return allExpenses.last.id++;
     } else {
@@ -35,34 +36,52 @@ class ExpensesController {
     }
   }
 
-  void editingExpenses(Expense expense) {
+  void insertExpenses(Expense expense) {
     Expense newExpense = expense.copyWith();
-    newExpense.id = idController();
+    Map<String, dynamic> expenseMap = newExpense.toMap();
+    dataController.insert(expenseMap, tableName);
+  }
+
+  void updateExpenses(Expense expense) async {
+    Expense newExpense = expense.copyWith();
+    newExpense.id = await idController();
     Map<String, dynamic> expensesMap = expense.toMap();
-    dataController.update(expense.id, expensesMap, tableName);
+    dataController.update(expensesMap, tableName);
   }
 
   void excludeExpense(Expense expense) {
-    dataController.delete(tableName, expense.id);
+    Expense newExpense = expense.copyWith();
+    newExpense.isActive = false;
+    Map<String, dynamic> expenseMap = newExpense.toMap();
+    dataController.update(expenseMap, tableName);
   }
 
-  Expense readExpense(int id) {
-    Expense expense = readAllExpenses().where((e) => e.id == id).single;
+  Future<Expense> readExpense(int id) async {
+    List<Expense> result = await readAllExpenses();
+    Expense expense = result.where((e) => e.id == id).single;
     return expense;
   }
 
-  List<Expense> readAllExpenses() {
-    return dataController
-        .readAll(tableName)
-        .map((e) => Expense.fromMap(e))
-        .toList();
+  List<Expense> filterExpense() {
+    return [];
+  }
+
+  Future<List<Expense>> activeExpense() async {
+    List<Expense> expenses = await readAllExpenses();
+    List<Expense> activeExpenses = expenses.where((e) => e.isActive).toList();
+    return activeExpenses;
+  }
+
+  Future<List<Expense>> readAllExpenses() async {
+    List<Map<String, dynamic>> result = await dataController.read(tableName);
+    return result.map((e) => Expense.fromMap(e)).toList();
   }
 
   void changeTitle(String newTitle, Expense expense) {
     Expense changeExpense = expense.copyWith();
     changeExpense.title = newTitle;
     Map<String, dynamic> expenseMap = changeExpense.toMap();
-    dataController.update(expense.id, expenseMap, tableName);
+    dataController.update(expenseMap, tableName);
   }
 
   void changeCategory(
@@ -75,14 +94,14 @@ class ExpensesController {
     Expense changeExpense = expense.copyWith();
     changeExpense.value = newValue;
     Map<String, dynamic> expenseMap = changeExpense.toMap();
-    dataController.update(expense.id, expenseMap, tableName);
+    dataController.update(expenseMap, tableName);
   }
 
   void changeExpireDate(DateTime newExpireDate, Expense expense) {
     Expense changeExpense = expense.copyWith();
     changeExpense.expireDate = newExpireDate;
     Map<String, dynamic> expenseMap = changeExpense.toMap();
-    dataController.update(expense.id, expenseMap, tableName);
+    dataController.update(expenseMap, tableName);
     expense.expireDate = newExpireDate;
   }
 
@@ -90,7 +109,7 @@ class ExpensesController {
     Expense changeExpense = expense.copyWith();
     changeExpense.isPaidOut = isPaidOut;
     Map<String, dynamic> expenseMap = changeExpense.toMap();
-    dataController.update(expense.id, expenseMap, tableName);
+    dataController.update(expenseMap, tableName);
     expense.isPaidOut = isPaidOut;
   }
 }

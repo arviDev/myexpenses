@@ -1,24 +1,26 @@
-import 'dart:convert';
-
 class Category {
   int id;
   String title;
   String color;
+  bool isActive;
   Category({
     required this.id,
     required this.title,
     required this.color,
+    required this.isActive,
   });
 
   Category copyWith({
     int? id,
     String? title,
     String? color,
+    bool? isActive,
   }) {
     return Category(
       id: id ?? this.id,
       title: title ?? this.title,
       color: color ?? this.color,
+      isActive: isActive ?? this.isActive,
     );
   }
 
@@ -27,6 +29,7 @@ class Category {
       'id': id,
       'title': title,
       'color': color,
+      'isActive': isActive ? 1 : 0,
     };
   }
 
@@ -35,16 +38,14 @@ class Category {
       id: map['id'],
       title: map['title'],
       color: map['color'],
+      isActive: map['isActive'],
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory Category.fromJson(String source) =>
-      Category.fromMap(json.decode(source));
-
   @override
-  String toString() => 'Category(id: $id, title: $title, color: $color)';
+  String toString() {
+    return 'Category(id: $id, title: $title, color: $color, isActive: $isActive)';
+  }
 
   @override
   bool operator ==(Object other) {
@@ -53,9 +54,12 @@ class Category {
     return other is Category &&
         other.id == id &&
         other.title == title &&
-        other.color == color;
+        other.color == color &&
+        other.isActive == isActive;
   }
 
   @override
-  int get hashCode => id.hashCode ^ title.hashCode ^ color.hashCode;
+  int get hashCode {
+    return id.hashCode ^ title.hashCode ^ color.hashCode ^ isActive.hashCode;
+  }
 }

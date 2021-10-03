@@ -14,9 +14,15 @@ class MyExpenses extends StatelessWidget {
     SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
     return MultiProvider(
       providers: [
-        Provider<DataController>(create: (_) => DataController()),
-        Provider<ExpensesController>(create: (_) => ExpensesController()),
-      ], child: ,
+        Provider<ExpensesController>(
+          create: (_) => ExpensesController(
+            dataController: DataController(),
+            categoryController: CategoryController(
+              dataController: DataController(),
+            ),
+          ),
+        ),
+      ],
       builder: (context, widget) {
         return const MaterialApp(
           debugShowCheckedModeBanner: false,

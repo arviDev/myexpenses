@@ -7,6 +7,7 @@ class Expense {
   Category category;
   bool isPaidOut;
   DateTime expireDate;
+  bool isActive;
   Expense({
     required this.id,
     required this.title,
@@ -14,6 +15,7 @@ class Expense {
     required this.category,
     required this.isPaidOut,
     required this.expireDate,
+    required this.isActive,
   });
 
   Expense copyWith({
@@ -23,6 +25,7 @@ class Expense {
     Category? category,
     bool? isPaidOut,
     DateTime? expireDate,
+    bool? isActive,
   }) {
     return Expense(
       id: id ?? this.id,
@@ -31,6 +34,7 @@ class Expense {
       category: category ?? this.category,
       isPaidOut: isPaidOut ?? this.isPaidOut,
       expireDate: expireDate ?? this.expireDate,
+      isActive: isActive ?? this.isActive,
     );
   }
 
@@ -42,6 +46,7 @@ class Expense {
       'category': category.toMap(),
       'isPaidOut': isPaidOut ? 1 : 0,
       'expireDate': expireDate.millisecondsSinceEpoch,
+      'isActive': isActive ? 1 : 0,
     };
   }
 
@@ -53,12 +58,13 @@ class Expense {
       category: Category.fromMap(map['category']),
       isPaidOut: map['isPaidOut'],
       expireDate: DateTime.fromMillisecondsSinceEpoch(map['expireDate']),
+      isActive: map['isActive'],
     );
   }
 
   @override
   String toString() {
-    return 'Expense(id: $id, title: $title, value: $value, category: $category, isPaidOut: $isPaidOut, expireDate: $expireDate)';
+    return 'Expense(id: $id, title: $title, value: $value, category: $category, isPaidOut: $isPaidOut, expireDate: $expireDate, isActive: $isActive)';
   }
 
   @override
@@ -71,7 +77,8 @@ class Expense {
         other.value == value &&
         other.category == category &&
         other.isPaidOut == isPaidOut &&
-        other.expireDate == expireDate;
+        other.expireDate == expireDate &&
+        other.isActive == isActive;
   }
 
   @override
@@ -81,6 +88,7 @@ class Expense {
         value.hashCode ^
         category.hashCode ^
         isPaidOut.hashCode ^
-        expireDate.hashCode;
+        expireDate.hashCode ^
+        isActive.hashCode;
   }
 }

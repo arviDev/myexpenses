@@ -1,4 +1,4 @@
-import 'package:myexpenses/app/data/sql/helpers/data_help.dart';
+import 'package:myexpenses/app/data/sql/data_help.dart';
 
 abstract class ExpenseData {
   static String sqlCreate() {
@@ -8,6 +8,7 @@ abstract class ExpenseData {
     const String categoryField = 'category';
     const String isPaidOutField = 'isPaidOut';
     const String expireDateField = 'expireDate';
+    const String isActive = 'isActive';
     return '''
     CREATE TABLE expenses (
       $idField $DataHelp.idType,
@@ -16,6 +17,7 @@ abstract class ExpenseData {
       $categoryField $DataHelp.intType,
       $isPaidOutField $DataHelp.boolType,
       $expireDateField $DataHelp.dateType,
+      $isActive $DataHelp.boolType,
     )
     ''';
   }

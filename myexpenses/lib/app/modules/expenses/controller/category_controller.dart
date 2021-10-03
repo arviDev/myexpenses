@@ -13,6 +13,7 @@ class CategoryController {
       id: 0,
       title: title,
       color: color,
+      isActive: true,
     );
     editingCategory(newCategory);
   }
@@ -30,11 +31,12 @@ class CategoryController {
     Category newCategory = category.copyWith();
     newCategory.id = idController();
     Map<String, dynamic> categoryMap = newCategory.toMap();
-    dataController.update(newCategory.id, categoryMap, tableName);
+    dataController.update(categoryMap, tableName);
   }
 
   void excludeCategory(Category category) {
-    dataController.delete(tableName, category.id);
+    Map<String, dynamic> categoryMap = category.toMap();
+    dataController.delete(categoryMap, tableName);
   }
 
   Category readCategory(int id) {
