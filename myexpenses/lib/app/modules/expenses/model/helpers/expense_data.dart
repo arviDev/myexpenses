@@ -5,7 +5,7 @@ abstract class ExpenseData {
     const String idField = 'id';
     const String titleField = 'title';
     const String valueField = 'value';
-    const String categoryField = 'category';
+    const String categoryField = 'categoryId';
     const String isPaidOutField = 'isPaidOut';
     const String expireDateField = 'expireDate';
     const String isActive = 'isActive';

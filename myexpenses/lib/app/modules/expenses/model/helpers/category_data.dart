@@ -15,4 +15,12 @@ abstract class CategoryData {
     )
     ''';
   }
+
+  static Map<String, dynamic> sqlInsert() {
+    return {
+      'title': 'Supermercado',
+      'color': '06D6A0',
+      'isActive': 1,
+    };
+  }
 }

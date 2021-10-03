@@ -4,7 +4,8 @@ import 'package:myexpenses/app/data/data_controller.dart';
 import 'package:myexpenses/app/home/home_page.dart';
 import 'package:myexpenses/app/modules/expenses/controller/category_controller.dart';
 import 'package:myexpenses/app/modules/expenses/controller/expenses_controller.dart';
-import 'package:myexpenses/app/modules/expenses/view/page/expense_add_page.dart';
+import 'package:myexpenses/app/modules/expenses/view/components/expense_add_dialog.dart';
+import 'package:myexpenses/app/modules/expenses/view/page/expense_page.dart';
 import 'package:provider/provider.dart';
 
 class MyExpenses extends StatelessWidget {
@@ -35,8 +36,7 @@ class MyExpenses extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           initialRoute: '/',
           routes: {
-            '/': (ctx) => const HomePage(),
-            '/addExpense': (ctx) => const ExpenseAddPage(),
+            '/': (ctx) => const ExpensePage(),
           },
         );
       },

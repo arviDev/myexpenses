@@ -26,10 +26,12 @@ class DB {
   }
 
   _onCreate(Database db, int versao) async {
-    await db.execute(_expenses);
-    await db.execute(_category);
+    await db.execute(_expensesCreate);
+    await db.execute(_categoryCreate);
+    await db.insert('categorys', _categoryInsert);
   }
 
-  String get _expenses => ExpenseData.sqlCreate();
-  String get _category => CategoryData.sqlCreate();
+  String get _expensesCreate => ExpenseData.sqlCreate();
+  String get _categoryCreate => CategoryData.sqlCreate();
+  Map<String, dynamic> get _categoryInsert => CategoryData.sqlInsert();
 }

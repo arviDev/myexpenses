@@ -13,28 +13,26 @@ class ExpensesController {
   });
 
   void createExpense(
-      String title, Category category, double value, DateTime expireDate,
-      {bool isPaidOut = false}) async {
+      String title, int categoryId, double value, DateTime expireDate) async {
     Expense newExpense = Expense(
-      id: await idController(),
       title: title,
       value: value,
-      category: category,
-      isPaidOut: isPaidOut,
+      categoryId: categoryId,
+      isPaidOut: false,
       expireDate: expireDate,
       isActive: true,
     );
     insertExpenses(newExpense);
   }
 
-  Future<int> idController() async {
-    List<Expense> allExpenses = await readAllExpenses();
-    if (allExpenses.isNotEmpty) {
-      return allExpenses.last.id++;
-    } else {
-      return 0;
-    }
-  }
+  // Future<int> idController() async {
+  //   List<Expense> allExpenses = await readAllExpenses();
+  //   if (allExpenses.isNotEmpty) {
+  //     return allExpenses.last.id++;
+  //   } else {
+  //     return 0;
+  //   }
+  // }
 
   void insertExpenses(Expense expense) {
     Map<String, dynamic> expenseMap = expense.toMap();
