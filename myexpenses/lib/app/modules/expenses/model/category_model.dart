@@ -1,10 +1,10 @@
 class Category {
-  int id;
+  int? id;
   String title;
   String color;
   bool isActive;
   Category({
-    required this.id,
+    this.id,
     required this.title,
     required this.color,
     required this.isActive,
@@ -38,7 +38,7 @@ class Category {
       id: map['id'],
       title: map['title'],
       color: map['color'],
-      isActive: map['isActive'],
+      isActive: map['isActive'] == 1 ? true : false,
     );
   }
 

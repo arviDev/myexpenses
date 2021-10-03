@@ -16,6 +16,11 @@ class MyExpenses extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => DataController()),
+        Provider<CategoryController>(
+          create: (_) => CategoryController(
+            dataController: DataController(),
+          ),
+        ),
         Provider<ExpensesController>(
           create: (_) => ExpensesController(
             dataController: DataController(),

@@ -1,5 +1,5 @@
 abstract class DataHelp {
-  static String get idType => 'INTEGER PRIMATY KEY AUTOINCREMENT';
+  static String get idType => 'INTEGER PRIMARY KEY AUTOINCREMENT';
   static String get textType => 'TEXT NOT NULL';
   static String get doubleType => 'REAL NOT NULL';
   static String get boolType => 'BOOLEAN NOT NULL';

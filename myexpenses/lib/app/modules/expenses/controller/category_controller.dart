@@ -3,28 +3,23 @@ import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 
 class CategoryController {
   DataController dataController;
-  String tableName = 'category';
+  String tableName = 'categorys';
   CategoryController({
     required this.dataController,
   });
 
   void createCategory(String title, String color) async {
     Category newCategory = Category(
-      id: await idController(),
       title: title,
       color: color,
       isActive: true,
     );
-    editingCategory(newCategory);
+    insertCategory(newCategory);
   }
 
-  Future<int> idController() async {
-    List<Category> allCategorys = await readAllCategory();
-    if (allCategorys.isNotEmpty) {
-      return allCategorys.last.id++;
-    } else {
-      return 0;
-    }
+  void insertCategory(Category category) {
+    Map<String, dynamic> categoryMap = category.toMap();
+    dataController.insert(categoryMap, tableName);
   }
 
   void editingCategory(Category category) {

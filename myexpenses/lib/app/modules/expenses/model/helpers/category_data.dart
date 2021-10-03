@@ -7,11 +7,11 @@ abstract class CategoryData {
     const String colorField = 'color';
     const String isActive = 'isActive';
     return '''
-    CREATE TABLE expenses (
-      $idField $DataHelp.idType,
-      $titleField $DataHelp.textType,
-      $colorField $DataHelp.textType,
-      $isActive $DataHelp.boolType,
+    CREATE TABLE categorys (
+      $idField ${DataHelp.idType},
+      $titleField ${DataHelp.textType},
+      $colorField ${DataHelp.textType},
+      $isActive ${DataHelp.boolType}
     )
     ''';
   }

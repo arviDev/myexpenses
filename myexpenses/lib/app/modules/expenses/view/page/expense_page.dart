@@ -19,9 +19,9 @@ class _ExpensePageState extends State<ExpensePage> {
     return FutureBuilder(
       future: expensesController.activeExpense(),
       builder: (BuildContext ctx, AsyncSnapshot<List<Expense>> snap) {
-        if (snap.data == null) {
+        if (snap.data == null || snap.data!.isEmpty) {
           return const Center(
-              child: Text('Parece que você ainda não lançou despesas!'));
+              child: Text('Parece que você ainda não lançou despesas! :('));
         } else {
           return ListView.builder(
             itemCount: snap.data!.length,

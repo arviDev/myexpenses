@@ -11,13 +11,13 @@ abstract class ExpenseData {
     const String isActive = 'isActive';
     return '''
     CREATE TABLE expenses (
-      $idField $DataHelp.idType,
-      $titleField $DataHelp.textType,
-      $valueField $DataHelp.doubleType,
-      $categoryField $DataHelp.intType,
-      $isPaidOutField $DataHelp.boolType,
-      $expireDateField $DataHelp.dateType,
-      $isActive $DataHelp.boolType,
+      $idField ${DataHelp.idType},
+      $titleField ${DataHelp.textType},
+      $valueField ${DataHelp.doubleType},
+      $categoryField ${DataHelp.intType},
+      $isPaidOutField ${DataHelp.boolType},
+      $expireDateField ${DataHelp.dateType},
+      $isActive ${DataHelp.boolType}
     )
     ''';
   }

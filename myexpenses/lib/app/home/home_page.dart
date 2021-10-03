@@ -15,12 +15,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('my expenses'),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.add),
-          ),
-        ],
       ),
       body: const ExpensePage(),
       floatingActionButton: const FABCustom(),
