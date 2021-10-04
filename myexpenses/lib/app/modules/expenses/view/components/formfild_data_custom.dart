@@ -23,7 +23,8 @@ class _TextFormFieldDataCustomState extends State<TextFormFieldDataCustom> {
 
   @override
   void initState() {
-    _textEditingController.text = dateFormat(widget.initialValue);
+    var k = widget.initialValue != null ? dateFormat(widget.initialValue) : '';
+    _textEditingController.text = k;
     super.initState();
   }
 
