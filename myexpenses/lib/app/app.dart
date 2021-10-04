@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:myexpenses/app/data/data_controller.dart';
 import 'package:myexpenses/app/modules/expenses/controller/category_controller.dart';
 import 'package:myexpenses/app/modules/expenses/controller/expenses_controller.dart';
+import 'package:myexpenses/app/modules/expenses/view/page/category_page.dart';
 import 'package:myexpenses/app/modules/expenses/view/page/expense_page.dart';
 import 'package:provider/provider.dart';
 
@@ -31,10 +33,16 @@ class MyExpenses extends StatelessWidget {
       ],
       builder: (context, widget) {
         return MaterialApp(
+          localizationsDelegates: const [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate
+          ],
+          supportedLocales: const [Locale('pt', 'BR')],
           debugShowCheckedModeBanner: false,
           initialRoute: '/',
           routes: {
             '/': (ctx) => const ExpensePage(),
+            '/category': (ctx) => const CategoryPage(),
           },
         );
       },

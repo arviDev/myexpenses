@@ -3,6 +3,7 @@ import 'package:myexpenses/app/helpers/currency_format.dart';
 import 'package:myexpenses/app/helpers/date_format.dart';
 import 'package:myexpenses/app/modules/expenses/controller/expenses_controller.dart';
 import 'package:myexpenses/app/modules/expenses/model/expense_model.dart';
+import 'package:myexpenses/app/modules/expenses/view/components/expense_edit_dialog.dart';
 import 'package:provider/provider.dart';
 
 class ListTileCustom extends StatefulWidget {
@@ -22,19 +23,6 @@ class _ListTileCustomState extends State<ListTileCustom> {
     return Dismissible(
       background: const Card(
         child: Padding(
-          padding: EdgeInsets.only(left: 15),
-          child: Align(
-            alignment: Alignment.centerLeft,
-            child: Icon(
-              Icons.done,
-              color: Colors.white,
-            ),
-          ),
-        ),
-        color: Color(0xFF70C1B3),
-      ),
-      secondaryBackground: const Card(
-        child: Padding(
           padding: EdgeInsets.only(right: 15),
           child: Align(
             alignment: Alignment.centerRight,
@@ -53,12 +41,18 @@ class _ListTileCustomState extends State<ListTileCustom> {
           subtitle:
               Text('Vencimento: ${dateFormat(widget.expense.expireDate)}'),
           trailing: Text(currencyFormat(widget.expense.value)),
+          onTap: () {
+            showDialog(
+              context: context,
+              builder: (_) => ExpenseEditPage(
+                expense: widget.expense,
+              ),
+            );
+          },
         ),
       ),
       onDismissed: (direction) {
-        if (direction == DismissDirection.startToEnd) {
-          expensesController.changeisPaidOut(true, widget.expense);
-        } else {
+        if (direction == DismissDirection.endToStart) {
           expensesController.excludeExpense(widget.expense);
         }
       },

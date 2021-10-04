@@ -37,6 +37,7 @@ class _AppBarCustomState extends State<AppBarCustom> {
         child: !widget.isSearch
             ? Text(title)
             : TextField(
+                autofocus: true,
                 showCursor: false,
                 onChanged: (value) => widget.onChange(value),
                 textAlign: TextAlign.left,
@@ -70,16 +71,12 @@ class _AppBarCustomState extends State<AppBarCustom> {
           icon: const Icon(Icons.filter_alt_outlined),
         ),
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/category');
+          },
           icon: const Icon(Icons.category),
         )
       ],
-      // bottom: const TabBar(
-      //   tabs: [
-      //     Text('Pagos'),
-      //     Text('A Pagar'),
-      //   ],
-      // ),
     );
   }
 }

@@ -16,6 +16,12 @@ class DropCustom extends StatelessWidget {
       future: categoryController.readAllCategory(),
       builder: (BuildContext context, AsyncSnapshot<List<Category>> snap) {
         return DropdownButtonFormField<Category>(
+          validator: (value) {
+            if (value == null) {
+              return 'Campo obrigatório';
+            }
+          },
+          autofocus: true,
           hint: const Text('Categoria...'),
           onChanged: (value) => onChange(value),
           items: List.generate(

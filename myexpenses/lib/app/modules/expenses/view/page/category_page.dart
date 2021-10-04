@@ -1,64 +1,55 @@
 import 'package:flutter/material.dart';
-import 'package:myexpenses/app/modules/expenses/controller/expenses_controller.dart';
+import 'package:myexpenses/app/modules/expenses/controller/category_controller.dart';
+import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 import 'package:myexpenses/app/modules/expenses/model/expense_model.dart';
-import 'package:myexpenses/app/modules/expenses/view/components/appbar_custom.dart';
 import 'package:myexpenses/app/modules/expenses/view/components/fab_custom.dart';
-import 'package:myexpenses/app/modules/expenses/view/components/list_tile_custom.dart';
+import 'package:myexpenses/app/modules/expenses/view/page/expense_filter_page.dart';
 import 'package:provider/provider.dart';
 
-class ExpensePage extends StatefulWidget {
-  const ExpensePage({Key? key}) : super(key: key);
+class CategoryPage extends StatefulWidget {
+  const CategoryPage({Key? key}) : super(key: key);
 
   @override
-  _ExpensePageState createState() => _ExpensePageState();
+  _CategoryPageState createState() => _CategoryPageState();
 }
 
-class _ExpensePageState extends State<ExpensePage> {
-  bool _isSearch = false;
-  String _filter = '';
-
-  _onPress() {
-    setState(() {
-      if (_isSearch) {
-        _filter = '';
-      }
-      _isSearch = !_isSearch;
-    });
-  }
-
-  _onChange(String value) {
-    setState(() {
-      _filter = value;
-    });
-  }
-
+class _CategoryPageState extends State<CategoryPage> {
   Future<List<Expense>>? expenses;
   @override
   Widget build(BuildContext context) {
-    ExpensesController expensesController =
-        Provider.of<ExpensesController>(context);
+    CategoryController categoryController =
+        Provider.of<CategoryController>(context);
 
-    expenses = !_isSearch
-        ? expensesController.activeExpense()
-        : expensesController.filterExpense(_filter);
     return Scaffold(
-      appBar: AppBarCustom(
-          isSearch: _isSearch, onChange: _onChange, onPress: _onPress),
+      appBar: AppBar(
+        title: const Text('Categorias'),
+      ),
       body: FutureBuilder(
-        future: expenses,
-        builder: (BuildContext ctx, AsyncSnapshot<List<Expense>> snap) {
-          if (snap.hasData && snap.data!.isNotEmpty) {
-            return ListView.builder(
-              padding: const EdgeInsets.all(15),
-              itemCount: snap.data!.length,
-              itemBuilder: (_, idx) {
-                return ListTileCustom(expense: snap.data![idx]);
-              },
-            );
-          } else {
-            return const Center(
-                child: Text('Parece que você ainda não lançou despesas! :('));
-          }
+        initialData: [Category(title: 'Padrão', color: '', isActive: true)],
+        future: categoryController.readAllCategory(),
+        builder: (BuildContext ctx, AsyncSnapshot<List<Category>> snap) {
+          return ListView.builder(
+            padding: const EdgeInsets.all(15),
+            itemCount: snap.data!.length,
+            itemBuilder: (_, idx) {
+              return Card(
+                child: ListTile(
+                  title: Text(snap.data![idx].title),
+                  onTap: () {
+                    Navigator.push<void>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ExpenseFilterPage(
+                          categoryId: snap.data![idx].id!,
+                          categoryTitle: snap.data![idx].title,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
         },
       ),
       floatingActionButton: const FABCustom(),

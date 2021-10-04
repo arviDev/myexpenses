@@ -65,6 +65,14 @@ class ExpensesController extends ChangeNotifier {
     return filterExpenses;
   }
 
+  Future<List<Expense>> filterExpenseCategory(int categoryId) async {
+    List<Expense> expenses = await readAllExpenses();
+    List<Expense> filterExpenses =
+        expenses.where((e) => e.categoryId == categoryId).toList();
+    notifyListeners();
+    return filterExpenses;
+  }
+
   Future<List<Expense>> readAllExpenses() async {
     List<Map<String, dynamic>> result = await dataController.read(tableName);
     return result.map((e) => Expense.fromMap(e)).toList();

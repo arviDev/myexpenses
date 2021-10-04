@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:myexpenses/app/helpers/date_format.dart';
 
 class TextFormFieldDataCustom extends StatefulWidget {
   final Function onChange;
   final String hint;
+  final dynamic initialValue;
   const TextFormFieldDataCustom({
     Key? key,
     required this.onChange,
     required this.hint,
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -19,9 +22,16 @@ class _TextFormFieldDataCustomState extends State<TextFormFieldDataCustom> {
   final TextEditingController _textEditingController = TextEditingController();
 
   @override
+  void initState() {
+    _textEditingController.text = dateFormat(widget.initialValue);
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _selectDate(BuildContext context) async {
       final DateTime? picked = await showDatePicker(
+        //locale: const Locale('pt', 'BR'),
         context: context,
         initialDate: selectDate,
         firstDate: DateTime(2021),
@@ -31,13 +41,21 @@ class _TextFormFieldDataCustomState extends State<TextFormFieldDataCustom> {
         widget.onChange(picked);
         setState(() {
           selectDate = picked;
-          _textEditingController.text = picked.toString();
+          _textEditingController.text = dateFormat(picked);
         });
       }
     }
 
     return TextFormField(
-      onChanged: (value) => _textEditingController.text = value,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Campo obrigatório';
+        }
+      },
+      autofocus: false,
+      keyboardType: TextInputType.none,
+      onChanged: (value) =>
+          _textEditingController.text = dateFormat(DateTime.parse(value)),
       controller: _textEditingController,
       decoration: InputDecoration(
         hintText: widget.hint,
