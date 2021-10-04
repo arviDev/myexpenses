@@ -24,16 +24,16 @@ class _ExpensePageState extends State<ExpensePage> {
       body: FutureBuilder(
         future: expensesController.activeExpense(),
         builder: (BuildContext ctx, AsyncSnapshot<List<Expense>> snap) {
-          if (!snap.hasData) {
-            return const Center(
-                child: Text('Parece que você ainda não lançou despesas! :('));
-          } else {
+          if (snap.hasData) {
             return ListView.builder(
               itemCount: snap.data!.length,
               itemBuilder: (_, idx) {
                 return ListTileCustom(title: snap.data![idx].title);
               },
             );
+          } else {
+            return const Center(
+                child: Text('Parece que você ainda não lançou despesas! :('));
           }
         },
       ),

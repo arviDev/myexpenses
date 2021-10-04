@@ -12,26 +12,20 @@ class DropCustom extends StatelessWidget {
     CategoryController categoryController =
         Provider.of<CategoryController>(context);
     return FutureBuilder(
+      initialData: [Category(title: 'Padrão', color: '', isActive: true)],
       future: categoryController.readAllCategory(),
       builder: (BuildContext context, AsyncSnapshot<List<Category>> snap) {
-        if (snap.hasData) {
-          return DropdownButtonFormField<Category>(
-            value: snap.data!.first,
-            onChanged: (value) => onChange(value),
-            items: List.generate(
-              snap.data!.length,
-              (idx) => DropdownMenuItem(
-                value: snap.data![idx],
-                child: Text(snap.data![idx].title),
-              ),
+        return DropdownButtonFormField<Category>(
+          value: snap.data!.first,
+          onChanged: (value) => onChange(value),
+          items: List.generate(
+            snap.data!.length,
+            (idx) => DropdownMenuItem(
+              value: snap.data![idx],
+              child: Text(snap.data![idx].title),
             ),
-          );
-        } else {
-          return DropdownButtonFormField(
-            value: 'no data',
-            items: const [],
-          );
-        }
+          ),
+        );
       },
     );
   }

@@ -28,5 +28,6 @@ class DataController extends ChangeNotifier {
   void update(Map<String, dynamic> map, String tableName) async {
     Database db = await DB.instance.database;
     db.update(tableName, map, where: 'id = ?', whereArgs: [map['id']]);
+    notifyListeners();
   }
 }
