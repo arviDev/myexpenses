@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:myexpenses/app/data/data_controller.dart';
 import 'package:myexpenses/app/modules/expenses/controller/category_controller.dart';
 import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 import 'package:myexpenses/app/modules/expenses/model/expense_model.dart';
 
-class ExpensesController {
+class ExpensesController extends ChangeNotifier {
   DataController dataController;
   CategoryController categoryController;
   String tableName = 'expenses';
@@ -25,30 +26,22 @@ class ExpensesController {
     insertExpenses(newExpense);
   }
 
-  // Future<int> idController() async {
-  //   List<Expense> allExpenses = await readAllExpenses();
-  //   if (allExpenses.isNotEmpty) {
-  //     return allExpenses.last.id++;
-  //   } else {
-  //     return 0;
-  //   }
-  // }
-
   void insertExpenses(Expense expense) {
     Map<String, dynamic> expenseMap = expense.toMap();
     dataController.insert(expenseMap, tableName);
+    notifyListeners();
   }
 
   void updateExpenses(Expense expense) async {
     Map<String, dynamic> expensesMap = expense.toMap();
     dataController.update(expensesMap, tableName);
+    notifyListeners();
   }
 
   void excludeExpense(Expense expense) {
     Expense newExpense = expense.copyWith();
     newExpense.isActive = false;
-    Map<String, dynamic> expenseMap = newExpense.toMap();
-    dataController.update(expenseMap, tableName);
+    updateExpenses(newExpense);
   }
 
   Future<Expense> readExpense(int id) async {
@@ -57,14 +50,19 @@ class ExpensesController {
     return expense;
   }
 
-  List<Expense> filterExpense() {
-    return [];
-  }
-
   Future<List<Expense>> activeExpense() async {
     List<Expense> expenses = await readAllExpenses();
     List<Expense> activeExpenses = expenses.where((e) => e.isActive).toList();
     return activeExpenses;
+  }
+
+  Future<List<Expense>> filterExpense(String value) async {
+    List<Expense> expenses = await readAllExpenses();
+    List<Expense> filterExpenses = expenses
+        .where((e) => e.title.toLowerCase().contains(value.toLowerCase()))
+        .toList();
+    notifyListeners();
+    return filterExpenses;
   }
 
   Future<List<Expense>> readAllExpenses() async {
@@ -73,10 +71,9 @@ class ExpensesController {
   }
 
   void changeTitle(String newTitle, Expense expense) {
-    Expense changeExpense = expense.copyWith();
-    changeExpense.title = newTitle;
-    Map<String, dynamic> expenseMap = changeExpense.toMap();
-    dataController.update(expenseMap, tableName);
+    Expense changedExpense = expense.copyWith();
+    changedExpense.title = newTitle;
+    updateExpenses(changedExpense);
   }
 
   void changeCategory(
@@ -86,25 +83,20 @@ class ExpensesController {
     //TODO: implements newCategory set
   }
   void changeValue(double newValue, Expense expense) {
-    Expense changeExpense = expense.copyWith();
-    changeExpense.value = newValue;
-    Map<String, dynamic> expenseMap = changeExpense.toMap();
-    dataController.update(expenseMap, tableName);
+    Expense changedExpense = expense.copyWith();
+    changedExpense.value = newValue;
+    updateExpenses(changedExpense);
   }
 
   void changeExpireDate(DateTime newExpireDate, Expense expense) {
-    Expense changeExpense = expense.copyWith();
-    changeExpense.expireDate = newExpireDate;
-    Map<String, dynamic> expenseMap = changeExpense.toMap();
-    dataController.update(expenseMap, tableName);
-    expense.expireDate = newExpireDate;
+    Expense changedExpense = expense.copyWith();
+    changedExpense.expireDate = newExpireDate;
+    updateExpenses(changedExpense);
   }
 
   void changeisPaidOut(bool isPaidOut, Expense expense) {
-    Expense changeExpense = expense.copyWith();
-    changeExpense.isPaidOut = isPaidOut;
-    Map<String, dynamic> expenseMap = changeExpense.toMap();
-    dataController.update(expenseMap, tableName);
-    expense.isPaidOut = isPaidOut;
+    Expense changedExpense = expense.copyWith();
+    changedExpense.isPaidOut = isPaidOut;
+    updateExpenses(changedExpense);
   }
 }

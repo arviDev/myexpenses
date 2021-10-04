@@ -83,10 +83,6 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
               TextFormFieldDropCustom(
                 onChange: _onChangeCategoryId,
               ),
-              Text(title ?? '1'),
-              Text(value ?? '1'),
-              Text(categoryId.toString()),
-              Text(expired.toString()),
             ],
           ),
         ),
@@ -127,8 +123,8 @@ class _ExpenseAddPageState extends State<ExpenseAddPage> {
             ),
           ),
           onPressed: () {
-            expensesController.createExpense(
-                title!, categoryId!, double.parse(value!), expired!);
+            expensesController.createExpense(title!, categoryId!,
+                double.parse(value!.replaceAll(',', '.')), expired!);
             Navigator.pop(context);
           },
         ),

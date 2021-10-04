@@ -1,7 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:myexpenses/app/data/data_controller.dart';
 import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 
-class CategoryController {
+class CategoryController extends ChangeNotifier {
   DataController dataController;
   String tableName = 'categorys';
   CategoryController({
@@ -20,16 +21,19 @@ class CategoryController {
   void insertCategory(Category category) {
     Map<String, dynamic> categoryMap = category.toMap();
     dataController.insert(categoryMap, tableName);
+    notifyListeners();
   }
 
-  void editingCategory(Category category) {
+  void updateCategory(Category category) {
     Map<String, dynamic> categoryMap = category.toMap();
     dataController.update(categoryMap, tableName);
+    notifyListeners();
   }
 
   void excludeCategory(Category category) {
-    Map<String, dynamic> categoryMap = category.toMap();
-    dataController.delete(categoryMap, tableName);
+    Category changedCategory = category.copyWith();
+    changedCategory.isActive = false;
+    updateCategory(changedCategory);
   }
 
   Future<Category> readCategory(int id) async {
@@ -45,16 +49,14 @@ class CategoryController {
   }
 
   void changeTitle(String newTitle, Category category) {
-    Category changeCategory = category.copyWith();
-    changeCategory.title = newTitle;
-    Map<String, dynamic> categoryMap = changeCategory.toMap();
-    dataController.update(categoryMap, tableName);
+    Category changedCategory = category.copyWith();
+    changedCategory.title = newTitle;
+    updateCategory(changedCategory);
   }
 
   void changeColor(String newColor, Category category) {
-    Category changeCategory = category.copyWith();
-    changeCategory.color = newColor;
-    Map<String, dynamic> categoryMap = changeCategory.toMap();
-    dataController.update(categoryMap, tableName);
+    Category changedCategory = category.copyWith();
+    changedCategory.color = newColor;
+    updateCategory(changedCategory);
   }
 }

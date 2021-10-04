@@ -27,17 +27,20 @@ class _TextFormFieldDropCustomState extends State<TextFormFieldDropCustom> {
     CategoryController categoryController =
         Provider.of<CategoryController>(context);
 
-    _categoryDialog(BuildContext context, String text,
-        [String editText = '']) async {
+    _categoryDialog(
+      BuildContext context,
+      String title,
+    ) async {
       return showDialog(
         context: context,
         builder: (context) {
           TextEditingController textEditingController = TextEditingController();
+
           return AlertDialog(
+            title: Text(title),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(text),
                 TextFormField(
                   controller: textEditingController,
                   decoration: const InputDecoration(hintText: ''),
@@ -49,6 +52,7 @@ class _TextFormFieldDropCustomState extends State<TextFormFieldDropCustom> {
                 onPressed: () {
                   categoryController.createCategory(
                       textEditingController.text, '2A9D8F');
+
                   Navigator.pop(context);
                 },
                 child: const Text('Salvar'),
@@ -62,34 +66,18 @@ class _TextFormFieldDropCustomState extends State<TextFormFieldDropCustom> {
     return Row(
       children: [
         Expanded(
-          flex: 70,
+          flex: 85,
           child: DropCustom(onChange: _onChangeCategory),
         ),
         Expanded(
           flex: 15,
           child: IconButton(
             onPressed: () {
-              _categoryDialog(context, 'Adicionar Categoria', category!.title);
+              _categoryDialog(context, 'Adicionar Categoria');
             },
             icon: const Center(
               child: Icon(
                 Icons.add,
-              ),
-            ),
-          ),
-        ),
-        Expanded(
-          flex: 15,
-          child: IconButton(
-            onPressed: () {
-              _categoryDialog(
-                context,
-                'Editar Categoria',
-              );
-            },
-            icon: const Center(
-              child: Icon(
-                Icons.edit,
               ),
             ),
           ),

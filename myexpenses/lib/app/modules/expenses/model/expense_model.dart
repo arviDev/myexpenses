@@ -1,5 +1,3 @@
-import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
-
 class Expense {
   int? id;
   String title;

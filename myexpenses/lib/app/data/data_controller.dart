@@ -7,7 +7,7 @@ class DataController extends ChangeNotifier {
     deleteDatabase();
   }
 
-  void insert(Map<String, dynamic> map, String tableName) async {
+  Future<void> insert(Map<String, dynamic> map, String tableName) async {
     Database db = await DB.instance.database;
     db.insert(tableName, map);
     notifyListeners();

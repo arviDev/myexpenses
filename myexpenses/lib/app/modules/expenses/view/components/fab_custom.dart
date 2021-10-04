@@ -7,6 +7,7 @@ class FABCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      tooltip: 'Nova Despesa',
       child: const Icon(Icons.add),
       onPressed: () {
         showDialog(
