@@ -4,5 +4,9 @@ abstract class InicializerDatabase {
   dynamic onInitializer();
 
   ///if relational create a tables, in doc types, create the box
-  onCreateDocs();
+  ///database == box
+  onCreateDocs(dynamic database, List<String> docsCreate);
+
+  ///insert primary data
+  onInsertDocs(dynamic dabase, Map<String, dynamic> map);
 }

@@ -1,4 +1,5 @@
 import 'package:myexpenses/app/data/inicializer.dart';
+import 'package:myexpenses/app/data/sqlite_create.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SqliteInicializer implements InicializerDatabase {
@@ -25,12 +26,19 @@ class SqliteInicializer implements InicializerDatabase {
   }
 
   @override
-  String onCreateDocs() {}
+  void onCreateDocs(dynamic database, List<String> docsCreate) async {
+    //create tables
+    await database.execute(_expensesCreate);
+    await database.execute(_categoryCreate);
+    await database.insert('categorys', _categoryInsert);
+  }
 
-  _onCreate(Database db, int versao) async {
-    await db.execute(_expensesCreate);
-    await db.execute(_categoryCreate);
-    await db.insert('categorys', _categoryInsert);
+  void _onCreate(Database database, int versao) async {
+    List<String> creates = sqliteCreate();
+    List<String> inserts = sqliteCreate();
+    for (var create in creates) {
+      database.execute(create);
+    }
   }
 
   String get _expensesCreate => ExpenseData.sqlCreate();

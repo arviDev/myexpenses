@@ -1,6 +1,6 @@
 import 'package:myexpenses/app/data/sql/data_help.dart';
 
-abstract class CategoryData {
+abstract class CategoryDataCreate {
   static String sqlCreate() {
     const String idField = 'id';
     const String titleField = 'title';
