@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:myexpenses/app/data/idata.dart';
 import 'package:myexpenses/app/data/sql/db.dart';
+import 'package:myexpenses/app/data/sqlite_controller.dart';
 import 'package:sqflite/sqflite.dart';
 
 class DataController extends ChangeNotifier {
-  void deleteDatabase() async {
-    deleteDatabase();
-  }
+  final Data database = SqliteController();
 
   Future<void> insert(Map<String, dynamic> map, String tableName) async {
-    Database db = await DB.instance.database;
-    db.insert(tableName, map);
+    database.insert(map, tableName);
     notifyListeners();
   }
 
