@@ -37,7 +37,7 @@ class _ExpensePageState extends State<ExpensePage> {
   Widget build(BuildContext context) {
     ExpensesController expensesController =
         Provider.of<ExpensesController>(context);
-
+    expensesController.queryAll();
     expenses = !_isSearch
         ? expensesController.activeExpense()
         : expensesController.filterExpense(_filter);

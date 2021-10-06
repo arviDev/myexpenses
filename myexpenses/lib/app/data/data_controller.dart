@@ -30,4 +30,9 @@ class DataController extends ChangeNotifier {
     db.update(tableName, map, where: 'id = ?', whereArgs: [map['id']]);
     notifyListeners();
   }
+
+  Future<List<Map<String, dynamic>>> query(String query) async {
+    Database db = await DB.instance.database;
+    return db.rawQuery(query);
+  }
 }

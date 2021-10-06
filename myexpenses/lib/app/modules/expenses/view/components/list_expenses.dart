@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:myexpenses/app/modules/expenses/controller/category_controller.dart';
+import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 import 'package:myexpenses/app/modules/expenses/model/expense_model.dart';
 import 'package:myexpenses/app/modules/expenses/view/components/list_tile_custom.dart';
+import 'package:provider/provider.dart';
 
 class ExpensesList extends StatefulWidget {
   final Future<List<Expense>> list;
@@ -13,6 +16,15 @@ class ExpensesList extends StatefulWidget {
 class _ExpensesListState extends State<ExpensesList> {
   @override
   Widget build(BuildContext context) {
+    CategoryController categoryController =
+        Provider.of<CategoryController>(context);
+
+    List<Category>? categorys;
+
+    Future<void> getCategorys() async {
+      categorys = await categoryController.readAllCategory();
+    }
+
     return FutureBuilder(
       future: widget.list,
       builder: (BuildContext ctx, AsyncSnapshot<List<Expense>> snap) {
@@ -21,6 +33,8 @@ class _ExpensesListState extends State<ExpensesList> {
             padding: const EdgeInsets.all(15),
             itemCount: snap.data!.length,
             itemBuilder: (_, idx) {
+              getCategorys();
+              print(categorys!.length);
               return ListTileCustom(expense: snap.data![idx]);
             },
           );

@@ -84,6 +84,18 @@ class ExpensesController extends ChangeNotifier {
     updateExpenses(changedExpense);
   }
 
+  void queryAll() async {
+    //Future<Map<Expense, Category>>
+    String query = ('''
+    SELECT e.title, c.title as ctitle, c.color
+    FROM expenses as e
+    INNER JOIN  categorys as c ON
+    c.id == e.categoryId
+    ''');
+    List<Map<String, dynamic>> allquery = await dataController.query(query);
+    print(allquery);
+  }
+
   void changeCategory(
     Category newCategory,
     Expense expense,
