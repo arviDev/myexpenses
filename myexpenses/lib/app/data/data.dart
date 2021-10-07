@@ -1,4 +1,4 @@
-abstract class Data {
+abstract class IData {
   Future<void> insert(Map<String, dynamic> map, String docName);
   Future<void> delete(Map<String, dynamic> map, String docName);
   Future<void> update(Map<String, dynamic> map, String docName);

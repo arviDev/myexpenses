@@ -1,4 +1,4 @@
-import 'package:myexpenses/app/data/sql/data_help.dart';
+import 'package:myexpenses/app/data/sql/data_help_sql.dart';
 
 abstract class CategoryDataCreate {
   static String sqlCreate() {

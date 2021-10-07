@@ -61,14 +61,14 @@ class ExpenseData extends Expense implements IExpense {
   }
 }
 
-class ExpensesSerializer implements Serializer<ExpenseData> {
+class ExpensesSerializer implements ISerializer<ExpenseData> {
   @override
   ExpenseData fromMap(Map<String, dynamic> map) {
     return ExpenseData(
       id: map['id'],
       title: map['title'],
       value: map['value'],
-      category: map['category'],
+      category: CategorySerializer.fromMap,
       paidOut: map['isPaidOut'] == 1 ? true : false,
       expireDate: DateTime.fromMillisecondsSinceEpoch(map['expireDate']),
       active: map['isActive'] == 1 ? true : false,
@@ -82,9 +82,9 @@ class ExpensesSerializer implements Serializer<ExpenseData> {
       'title': object.title,
       'value': object.value,
       'categoryId': object.category,
-      'isPaidOut': object.paidOut,
+      'isPaidOut': object.paidOut ? 1 : 0,
       'expireDate': object.expireDate.millisecondsSinceEpoch,
-      'isActive': object.active,
+      'isActive': object.active ? 1 : 0,
     };
   }
 }

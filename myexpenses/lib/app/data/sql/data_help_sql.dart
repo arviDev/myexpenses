@@ -1,4 +1,4 @@
-abstract class DataHelp {
+abstract class DataHelpSql {
   static String get idType => 'INTEGER PRIMARY KEY AUTOINCREMENT';
   static String get textType => 'TEXT NOT NULL';
   static String get doubleType => 'REAL NOT NULL';

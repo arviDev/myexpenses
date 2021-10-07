@@ -21,27 +21,26 @@ class SqliteInicializer implements InicializerDatabase {
     return await openDatabase(
       path,
       version: 1,
-      onCreate: _onCreate,
+      onCreate: onCreateDocs,
     );
   }
 
   @override
-  void onCreateDocs(dynamic database, List<String> docsCreate) async {
-    //create tables
-    await database.execute(_expensesCreate);
-    await database.execute(_categoryCreate);
-    await database.insert('categorys', _categoryInsert);
+  Future<void> onCreateDocs(dynamic database, int version) async {
+    List<String> creates = SqliteCreate.sqliteCreate();
+    for (var create in creates) {
+      await database.execute(create);
+    }
+    onInsertDocs(database, 'categorys', SqliteCreate.sqliteInsert());
   }
 
-  void _onCreate(Database database, int versao) async {
-    List<String> creates = sqliteCreate();
-    List<String> inserts = sqliteCreate();
-    for (var create in creates) {
-      database.execute(create);
+  Future<void> onInsertDocs(
+    dynamic database,
+    String tableName,
+    List<Map<String, dynamic>> inserts,
+  ) async {
+    for (var insert in inserts) {
+      await database.insert(tableName, insert);
     }
   }
-
-  String get _expensesCreate => ExpenseData.sqlCreate();
-  String get _categoryCreate => CategoryData.sqlCreate();
-  Map<String, dynamic> get _categoryInsert => CategoryData.sqlInsert();
 }
