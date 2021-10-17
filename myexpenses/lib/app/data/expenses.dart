@@ -1,6 +1,7 @@
-import 'package:flutter/cupertino.dart';
-import 'package:myexpenses/app/data/category.dart';
+import 'package:myexpenses/app/data/category_controller.dart';
+import 'package:myexpenses/app/data/orm_controller.dart';
 import 'package:myexpenses/app/data/serializer.dart';
+import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 
 class Expense {
   int id;
@@ -55,20 +56,21 @@ class ExpenseData extends Expense implements IExpense {
 
   @override
   void setTitle(String value) {
-    title.isNotEmpty
-        ? title = value
-        : throw ErrorDescription('Text can\'t empty');
+    title.isNotEmpty ? title = value : throw ErrorHint('Text can\'t empty');
   }
 }
 
 class ExpensesSerializer implements ISerializer<ExpenseData> {
+  final CategoryController _categoryController =
+      CategoryController(ormController: OrmController());
+
   @override
-  ExpenseData fromMap(Map<String, dynamic> map) {
+  Future<ExpenseData> fromMap(Map<String, dynamic> map) async {
     return ExpenseData(
       id: map['id'],
       title: map['title'],
       value: map['value'],
-      category: CategorySerializer.fromMap,
+      category: await _categoryController.readCategory(map['id']),
       paidOut: map['isPaidOut'] == 1 ? true : false,
       expireDate: DateTime.fromMillisecondsSinceEpoch(map['expireDate']),
       active: map['isActive'] == 1 ? true : false,

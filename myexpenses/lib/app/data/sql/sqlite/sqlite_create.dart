@@ -1,4 +1,4 @@
-import 'package:myexpenses/app/modules/expenses/model/helpers/category_data.dart';
+import 'package:myexpenses/app/data/category_data.dart';
 import 'package:myexpenses/app/modules/expenses/model/helpers/expense_data.dart';
 
 abstract class SqliteCreate {

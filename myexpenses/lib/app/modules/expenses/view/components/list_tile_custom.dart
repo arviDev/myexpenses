@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myexpenses/app/helpers/currency_format.dart';
 import 'package:myexpenses/app/helpers/date_format.dart';
-import 'package:myexpenses/app/modules/expenses/controller/expenses_controller.dart';
+import 'package:myexpenses/app/data/expenses_controller.dart';
 import 'package:myexpenses/app/modules/expenses/model/expense_model.dart';
 import 'package:myexpenses/app/modules/expenses/view/components/expense_edit_dialog.dart';
 import 'package:provider/provider.dart';

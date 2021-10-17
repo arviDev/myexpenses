@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myexpenses/app/modules/expenses/controller/category_controller.dart';
+import 'package:myexpenses/app/data/category_controller.dart';
 import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 import 'package:myexpenses/app/modules/expenses/model/expense_model.dart';
 import 'package:myexpenses/app/modules/expenses/view/components/list_tile_custom.dart';

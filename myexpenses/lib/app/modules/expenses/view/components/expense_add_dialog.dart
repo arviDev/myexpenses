@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myexpenses/app/modules/expenses/controller/expenses_controller.dart';
+import 'package:myexpenses/app/data/expenses_controller.dart';
 import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 import 'package:myexpenses/app/modules/expenses/view/components/formfild_custom.dart';
 import 'package:myexpenses/app/modules/expenses/view/components/formfild_data_custom.dart';

@@ -1,5 +1,5 @@
 import 'package:myexpenses/app/data/inicializer.dart';
-import 'package:myexpenses/app/data/sqlite_create.dart';
+import 'package:myexpenses/app/data/sql/sqlite/sqlite_create.dart';
 import 'package:sqflite/sqflite.dart';
 
 class SqliteInicializer implements InicializerDatabase {

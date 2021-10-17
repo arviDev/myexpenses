@@ -3,10 +3,10 @@ import 'package:myexpenses/app/data/orm_controller.dart';
 import 'package:myexpenses/app/modules/expenses/model/category_model.dart';
 
 class CategoryController extends ChangeNotifier {
-  DataController dataController;
+  OrmController ormController;
   String tableName = 'categorys';
   CategoryController({
-    required this.dataController,
+    required this.ormController,
   });
 
   void createCategory(String title, String color) async {
@@ -20,13 +20,13 @@ class CategoryController extends ChangeNotifier {
 
   void insertCategory(Category category) {
     Map<String, dynamic> categoryMap = category.toMap();
-    dataController.insert(categoryMap, tableName);
+    ormController.insert(categoryMap, tableName);
     notifyListeners();
   }
 
   void updateCategory(Category category) {
     Map<String, dynamic> categoryMap = category.toMap();
-    dataController.update(categoryMap, tableName);
+    ormController.update(categoryMap, tableName);
     notifyListeners();
   }
 
@@ -43,7 +43,7 @@ class CategoryController extends ChangeNotifier {
   }
 
   Future<List<Category>> readAllCategory() async {
-    List<Map<String, dynamic>> result = await dataController.read(tableName);
+    List<Map<String, dynamic>> result = await ormController.read(tableName);
     List<Category> categorys = result.map((e) => Category.fromMap(e)).toList();
     return categorys;
   }
